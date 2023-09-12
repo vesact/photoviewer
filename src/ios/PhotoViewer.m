@@ -140,11 +140,12 @@
 
 - (NSURL *)localFileURLForImage:(NSString *)image
 {
-    Boolean isFirebase = [image rangeOfString:@"firebase"].length > 0;
     NSString* webStringURL = image;
-    if (!isFirebase) {
-      webStringURL = [image stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
-    }
+    // Following caused issues with URL containing a signature with encoded '%3A' (: -> %3A) which was then re-encoded into %253A (% ->%25)
+    //Boolean isFirebase = [image rangeOfString:@"firebase"].length > 0;
+    //if (!isFirebase) {
+    //  webStringURL = [image stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
+    //}
     NSURL* fileURL = [NSURL URLWithString:webStringURL];
 
     if (copyToReference && ![fileURL isFileReferenceURL]) {
